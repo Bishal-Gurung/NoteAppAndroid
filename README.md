@@ -2,6 +2,8 @@
 
 Name: Bishal Gurung
 
+College: Softwarica College 
+
 CollegeID: 9635681
 
 Batch: Jan19B
