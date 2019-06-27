@@ -163,7 +163,7 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/btnRegister1"
+                android:id="@+id/relativeLayout5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/relativeLayout4"
