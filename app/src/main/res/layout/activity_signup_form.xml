@@ -222,20 +222,31 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/relativeLayout6"
+                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="20dp">
 
 
-                    <Button
-                        android:id="@+id/btnLogin1"
+                    <!--<Button-->
+                        <!--android:id="@+id/btnLogin1"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="30dp"-->
+                        <!--android:background="@drawable/button_round"-->
+                        <!--android:text="Already a user? Login Here"-->
+                        <!--android:textColor="#ffffff"-->
+                        <!--android:textSize="20sp"-->
+
+                        <!--/>-->
+
+
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="30dp"
-                        android:background="@drawable/button_round"
                         android:text="Already a user? Login Here"
-                        android:textColor="#ffffff"
-                        android:textSize="20sp"
-
-                        />
+                        android:gravity="center"
+                        android:id="@+id/btn_login"
+                        android:clickable="true"
+                        android:textSize="15sp"/>
 
                 </RelativeLayout>
 
