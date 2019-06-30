@@ -84,7 +84,7 @@
                         tools:layout_editor_absoluteY="119dp">
 
                         <EditText
-                            android:id="@+id/etUnameLogin1"
+                            android:id="@+id/etUname"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:ems="10"
@@ -112,7 +112,7 @@
                         tools:layout_editor_absoluteY="119dp">
 
                         <EditText
-                            android:id="@+id/etEmailAddress"
+                            android:id="@+id/etEmail"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:ems="10"
@@ -141,7 +141,7 @@
                         tools:layout_editor_absoluteY="119dp">
 
                         <EditText
-                            android:id="@+id/etPasswordLogin"
+                            android:id="@+id/etPass"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:ems="10"
@@ -169,7 +169,7 @@
                         tools:layout_editor_absoluteY="119dp">
 
                         <EditText
-                            android:id="@+id/etRePasswordLogin"
+                            android:id="@+id/etRePass"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:ems="10"
@@ -204,7 +204,7 @@
                     android:layout_below="@id/relativeLayout5">
 
                     <Button
-                        android:id="@+id/btnRegister1"
+                        android:id="@+id/btnSignUp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="30dp"

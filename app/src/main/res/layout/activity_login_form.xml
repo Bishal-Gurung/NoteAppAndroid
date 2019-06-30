@@ -83,11 +83,11 @@
                     tools:layout_editor_absoluteY="119dp">
 
                     <EditText
-                        android:id="@+id/etUnameLogin"
+                        android:id="@+id/etEmailLogin"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:hint="Username"
+                        android:hint="Email"
                         android:inputType="text"
                         android:textSize="22sp" />
                 </android.support.design.widget.TextInputLayout>
@@ -113,7 +113,7 @@
                     >
 
                     <EditText
-                        android:id="@+id/etPasswordLogin"
+                        android:id="@+id/etPassword"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
