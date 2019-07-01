@@ -1,5 +1,6 @@
 package com.example.notetakingapp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,7 @@ public class LoginForm extends AppCompatActivity {
     private EditText etEmailLogin, etPassword;
     private Button btnLogin;
     FirebaseAuth auth;
+    private ProgressDialog progressDialog;
 
 
     @Override
@@ -34,6 +36,7 @@ public class LoginForm extends AppCompatActivity {
         etEmailLogin = findViewById(R.id.etEmailLogin);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
+
 
 
         btn_signup = findViewById(R.id.btn_signup);
@@ -55,13 +58,29 @@ public class LoginForm extends AppCompatActivity {
 
                 String txt_password = etPassword.getText().toString();
 
-                if(TextUtils.isEmpty(txt_email) || TextUtils.isEmpty(txt_password))
-
-                {
+                if (TextUtils.isEmpty(txt_email) || TextUtils.isEmpty(txt_password)) {
 
                     Toast.makeText(LoginForm.this, "All fields are required", Toast.LENGTH_SHORT).show();
 
                 } else {
+
+                    login(txt_email, txt_password);
+
+                }
+
+            }
+        });
+
+    }
+
+
+               private  void login(final String txt_email, String txt_password){
+
+
+                   progressDialog = new ProgressDialog(this);
+                   progressDialog.setMessage("Logging in, please wait...");
+
+                   progressDialog.show();
 
 
                     auth.signInWithEmailAndPassword(txt_email, txt_password)
@@ -69,9 +88,7 @@ public class LoginForm extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
 
-                                    if(task.isSuccessful())
-
-                                    {
+                                    if (task.isSuccessful()) {
 
                                         Intent intent = new Intent(LoginForm.this, MainActivity.class);
 
@@ -81,25 +98,25 @@ public class LoginForm extends AppCompatActivity {
 
                                         finish();
 
+                                        Toast.makeText(LoginForm.this, "Login successful", Toast.LENGTH_SHORT).show();
+
                                     } else {
 
                                         {
+                                            progressDialog.dismiss();
 
-                                            Toast.makeText(LoginForm.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(LoginForm.this, "Email or Password incorrect", Toast.LENGTH_SHORT).show();
 
                                         }
-
 
 
                                     }
 
                                 }
                             });
-                }
+
 
 
             }
-        });
 
-    }
 }
