@@ -39,7 +39,7 @@ dependencies {
     implementation 'com.android.support:design:28.0.0'
 
     //firebase ui
-    implementation 'com.firebaseui:firebase-ui-database:5.0.0'
+    implementation 'com.firebaseui:firebase-ui-database:2.0.0'
     implementation 'com.android.support:recyclerview-v7:28.0.0'
 
 
