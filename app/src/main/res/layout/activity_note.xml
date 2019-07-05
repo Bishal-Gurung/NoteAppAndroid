@@ -15,6 +15,7 @@
             android:id="@+id/new_note_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:title="@string/app_name"
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme" />
@@ -51,7 +52,7 @@
             android:padding="10dp" />
 
         <Button
-            android:id="@+id/new_note_btn"
+            android:id="@+id/new_note_btnCreate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/create_btn"

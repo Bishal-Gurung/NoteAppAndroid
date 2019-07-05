@@ -23,7 +23,7 @@ public class LoginForm extends AppCompatActivity {
     private EditText etEmailLogin, etPassword;
     private Button btnLogin;
     FirebaseAuth auth;
-    private ProgressDialog progressDialog;
+    private ProgressDialog progressDialogLogin;
 
 
     @Override
@@ -77,10 +77,10 @@ public class LoginForm extends AppCompatActivity {
                private  void login(final String txt_email, String txt_password){
 
 
-                   progressDialog = new ProgressDialog(this);
-                   progressDialog.setMessage("Logging in, please wait...");
+                   progressDialogLogin = new ProgressDialog(this);
+                   progressDialogLogin.setMessage("Logging in, please wait...");
 
-                   progressDialog.show();
+                   progressDialogLogin.show();
 
 
                     auth.signInWithEmailAndPassword(txt_email, txt_password)
@@ -95,7 +95,7 @@ public class LoginForm extends AppCompatActivity {
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 
                                         startActivity(intent);
-
+                                        progressDialogLogin.dismiss();
                                         finish();
 
                                         Toast.makeText(LoginForm.this, "Login successful", Toast.LENGTH_SHORT).show();
@@ -103,7 +103,7 @@ public class LoginForm extends AppCompatActivity {
                                     } else {
 
                                         {
-                                            progressDialog.dismiss();
+                                            progressDialogLogin.dismiss();
 
                                             Toast.makeText(LoginForm.this, "Email or Password incorrect", Toast.LENGTH_SHORT).show();
 

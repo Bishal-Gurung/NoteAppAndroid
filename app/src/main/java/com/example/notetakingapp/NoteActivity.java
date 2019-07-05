@@ -34,12 +34,12 @@ public class NoteActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_note);
 
-        btnCreate = (Button) findViewById(R.id.new_note_btn);
-        etTitle = (EditText) findViewById(R.id.new_note_title);
-        etContent = (EditText) findViewById(R.id.new_note_content);
-        mToolbar = (Toolbar) findViewById(R.id.new_note_toolbar);
+        btnCreate = findViewById(R.id.new_note_btnCreate);
+        etTitle = findViewById(R.id.new_note_title);
+        etContent =findViewById(R.id.new_note_content);
+        mToolbar = findViewById(R.id.new_note_toolbar);
         setSupportActionBar(mToolbar);
 
         fAuth = FirebaseAuth.getInstance();

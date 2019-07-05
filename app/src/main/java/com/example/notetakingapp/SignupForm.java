@@ -94,8 +94,9 @@ public class SignupForm extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Sigining up, please wait...");
-
         progressDialog.show();
+
+
 
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -126,7 +127,7 @@ public class SignupForm extends AppCompatActivity {
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 
                                         startActivity(intent);
-
+                                        progressDialog.dismiss();
                                         finish();
                                     }
 
