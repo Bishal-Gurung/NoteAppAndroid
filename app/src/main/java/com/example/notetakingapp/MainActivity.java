@@ -12,13 +12,13 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 
@@ -45,18 +45,26 @@ public class MainActivity extends AppCompatActivity {
         mNotesList = findViewById(R.id.notes_list);
         mNotesList.setHasFixedSize(true);
         mNotesList.setLayoutManager(gridLayoutManager);
+//      gridLayoutManager.setReverseLayout(true);
+//      gridLayoutManager.setStackFromEnd(true);
         mNotesList.addItemDecoration(new GridSpacingItemDecoration(4, dpToPx(4), true));
+        loadData();
     }
 
     @Override
     public void onStart() {
         super.onStart();
+    }
 
+    //retrieve notes
+    private void loadData(){
+
+        Query query= fNotesDatabase.orderByChild("timestamp");
         FirebaseRecyclerAdapter<NoteModel, NoteViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<NoteModel, NoteViewHolder>(
                 NoteModel.class,
                 R.layout.single_note_layout,
                 NoteViewHolder.class,
-                fNotesDatabase
+                query
 
 
         ) {
@@ -72,7 +80,9 @@ public class MainActivity extends AppCompatActivity {
                             String timestamp = dataSnapshot.child("timestamp").getValue().toString();
 
                             viewHolder.setNoteTitle(title);
-                            viewHolder.setNoteTime(timestamp);
+                            //viewHolder.setNoteTime(timestamp);
+                            GetTimeAgo getTimeAgo=new GetTimeAgo();
+                            viewHolder.setNoteTime(getTimeAgo.getTimeAgo(Long.parseLong(timestamp), getApplicationContext()));
 
                             viewHolder.noteCard.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -96,6 +106,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         mNotesList.setAdapter(firebaseRecyclerAdapter);
+
+
+
     }
 
     @Override
@@ -116,8 +129,17 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
 
+        switch (item.getItemId()) {
+            case R.id.refresh_btn:
+                Intent reIntent = new Intent(MainActivity.this, MainActivity.class);
+                startActivity(reIntent);
+                break;
+        }
+
         return true;
     }
+
+
 
     /**
      * Converting dp to pixel

@@ -10,7 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/LogiActivityTheme"
         >
-        <activity android:name=".NoteActivity"></activity>
+        <activity android:name=".NoteActivity"
+            android:label="Notes"></activity>
         <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

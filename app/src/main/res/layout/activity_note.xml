@@ -26,7 +26,8 @@
             android:layout_height="wrap_content"
             android:background="@color/transparent"
             android:hint="Type your Title.."
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:scrollbars="vertical"/>
 
 
         <View
@@ -39,6 +40,7 @@
             android:alpha=".3"
             android:background="@android:color/black" />
 
+
         <EditText
             android:id="@+id/new_note_content"
             android:layout_width="match_parent"
@@ -49,7 +51,9 @@
             android:gravity="top"
             android:hint="Type your description here..."
             android:inputType="textMultiLine"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:scrollbars="vertical"/>
+
 
         <Button
             android:id="@+id/new_note_btnCreate"
