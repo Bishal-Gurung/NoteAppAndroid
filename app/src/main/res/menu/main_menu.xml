@@ -13,7 +13,7 @@
         android:title="New Note"
         app:showAsAction="always" />
     <group android:checkableBehavior="single">
-        
+
         <item
             android:id="@+id/profile"
             android:title="Profle" />
