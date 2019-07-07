@@ -12,8 +12,12 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+
+import com.example.notetakingapp.Model.User;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     private GridLayoutManager gridLayoutManager;
     private DatabaseReference fNotesDatabase;
     private FirebaseAuth fAuth;
+    private TextView usrname;
+    FirebaseUser firebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +41,24 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        usrname = findViewById(R.id.usrname);
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        fNotesDatabase = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+
+        fNotesDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                usrname.setText(user.getUsername());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
 
         fAuth = FirebaseAuth.getInstance();
         if (fAuth.getCurrentUser() != null) {
@@ -57,9 +81,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //retrieve notes
-    private void loadData(){
+    private void loadData() {
 
-        Query query= fNotesDatabase.orderByChild("timestamp");
+        Query query = fNotesDatabase.orderByChild("timestamp");
         FirebaseRecyclerAdapter<NoteModel, NoteViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<NoteModel, NoteViewHolder>(
                 NoteModel.class,
                 R.layout.single_note_layout,
@@ -81,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
                             viewHolder.setNoteTitle(title);
                             //viewHolder.setNoteTime(timestamp);
-                            GetTimeAgo getTimeAgo=new GetTimeAgo();
+                            GetTimeAgo getTimeAgo = new GetTimeAgo();
                             viewHolder.setNoteTime(getTimeAgo.getTimeAgo(Long.parseLong(timestamp), getApplicationContext()));
 
                             viewHolder.noteCard.setOnClickListener(new View.OnClickListener() {
@@ -106,7 +130,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         mNotesList.setAdapter(firebaseRecyclerAdapter);
-
 
 
     }
@@ -136,9 +159,16 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
 
+        switch (item.getItemId()) {
+            case R.id.logout:
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(MainActivity.this, LoginForm.class));
+                finish();
+
+        }
+
         return true;
     }
-
 
 
     /**
