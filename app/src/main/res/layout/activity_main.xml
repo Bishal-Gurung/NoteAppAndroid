@@ -4,59 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient"
     tools:context=".MainActivity">
 
-    <ImageView
-        android:id="@+id/imageView6"
-        android:layout_width="160dp"
-        android:layout_height="275dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="115dp"
-        app:srcCompat="@drawable/nott" />
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
 
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/notes_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="105dp"
-        android:layout_marginTop="456dp"
-        android:background="#11000000"
-        android:ems="10"
-        android:drawableLeft="@drawable/ic_action_user"
-        android:hint="Username"
-        android:inputType="textPersonName"
-        android:textSize="16dp" />
-
-    <EditText
-        android:id="@+id/editText2"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="105dp"
-        android:layout_marginBottom="278dp"
-        android:background="#11000000"
-        android:drawableLeft="@drawable/ic_action_pass"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="textPersonName"
-        android:textSize="16dp" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="207dp"
-        android:layout_height="60dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="105dp"
-        android:layout_marginBottom="155dp"
-        android:background="#F10E8D"
-        android:text="login"
-        android:textColor="#ffffff" />
+        android:layout_marginTop="-5dp">
+    </android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>
