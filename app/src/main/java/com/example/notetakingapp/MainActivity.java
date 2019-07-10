@@ -1,20 +1,28 @@
 package com.example.notetakingapp;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+
+import com.example.notetakingapp.Model.User;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 
@@ -23,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     private GridLayoutManager gridLayoutManager;
     private DatabaseReference fNotesDatabase;
     private FirebaseAuth fAuth;
+    private TextView usrname;
+    FirebaseUser firebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,42 +42,81 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        usrname = findViewById(R.id.usrname);
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        fNotesDatabase = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+
+        fNotesDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                usrname.setText(user.getUsername());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
         fAuth = FirebaseAuth.getInstance();
-        if (fAuth.getCurrentUser()!=null){
+        if (fAuth.getCurrentUser() != null) {
             fNotesDatabase = FirebaseDatabase.getInstance().getReference().child("Notes").child(fAuth.getCurrentUser().getUid());
         }
 
-        gridLayoutManager = new GridLayoutManager(this,3,GridLayoutManager.VERTICAL,false);
-        mNotesList=findViewById(R.id.notes_list);
+        gridLayoutManager = new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false);
+        mNotesList = findViewById(R.id.notes_list);
         mNotesList.setHasFixedSize(true);
         mNotesList.setLayoutManager(gridLayoutManager);
+//      gridLayoutManager.setReverseLayout(true);
+//      gridLayoutManager.setStackFromEnd(true);
+        mNotesList.addItemDecoration(new GridSpacingItemDecoration(4, dpToPx(4), true));
+        loadData();
     }
 
     @Override
     public void onStart() {
         super.onStart();
+    }
 
+    //retrieve notes
+    private void loadData() {
+
+        Query query = fNotesDatabase.orderByChild("timestamp");
         FirebaseRecyclerAdapter<NoteModel, NoteViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<NoteModel, NoteViewHolder>(
                 NoteModel.class,
                 R.layout.single_note_layout,
                 NoteViewHolder.class,
-                fNotesDatabase
-
+                query
 
 
         ) {
             @Override
             protected void populateViewHolder(final NoteViewHolder viewHolder, NoteModel model, int position) {
 
-                String noteId = getRef(position).getKey();
+                final String noteId = getRef(position).getKey();
                 fNotesDatabase.child(noteId).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        String title = dataSnapshot.child("title").getValue().toString();
-                        String timestamp = dataSnapshot.child("timestamp").getValue().toString();
+                        if (dataSnapshot.hasChild("title") && dataSnapshot.hasChild("timestamp")) {
+                            String title = dataSnapshot.child("title").getValue().toString();
+                            String timestamp = dataSnapshot.child("timestamp").getValue().toString();
 
-                        viewHolder.setNoteTitle(title);
-                        viewHolder.setNoteTime(timestamp);
+                            viewHolder.setNoteTitle(title);
+                            //viewHolder.setNoteTime(timestamp);
+                            GetTimeAgo getTimeAgo = new GetTimeAgo();
+                            viewHolder.setNoteTime(getTimeAgo.getTimeAgo(Long.parseLong(timestamp), getApplicationContext()));
+
+                            viewHolder.noteCard.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent intent = new Intent(MainActivity.this, NoteActivity.class);
+                                    intent.putExtra("noteId", noteId);
+                                    startActivity(intent);
+                                }
+                            });
+                        }
                     }
 
                     @Override
@@ -81,12 +130,14 @@ public class MainActivity extends AppCompatActivity {
 
 
         mNotesList.setAdapter(firebaseRecyclerAdapter);
+
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.main_menu,menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
 
@@ -101,6 +152,30 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
 
+        switch (item.getItemId()) {
+            case R.id.refresh_btn:
+                Intent reIntent = new Intent(MainActivity.this, MainActivity.class);
+                startActivity(reIntent);
+                break;
+        }
+
+        switch (item.getItemId()) {
+            case R.id.logout:
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(MainActivity.this, LoginForm.class));
+                finish();
+
+        }
+
         return true;
+    }
+
+
+    /**
+     * Converting dp to pixel
+     */
+    private int dpToPx(int dp) {
+        Resources r = getResources();
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 }
